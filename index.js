@@ -5,21 +5,33 @@ const Intern = require("./Intern");
 
 const { writeFile } = require("fs").promises;
 
-const promptManager = () => {
-  return inquirer.prompt([
+let employees = [];
+
+prompts();
+
+function buildTeam() {
+  inquirer.prompt({
+    type: "list",
+    name: "employeeTypes",
+    message: "Which employee type do you want to add?",
+    choices: ["Manager", "Engineer", "Intern", "Finished"],
+  })
+  .then((response) => {
+    (response.employeeType === 'Manager') {
+      inquirer.prompt([
     {
       type: "input",
-      name: "manager",
+      name: "name",
       message: "What is their name?",
     },
     {
       type: "input",
-      name: "idManager",
+      name: "id",
       message: "What is their id number?",
     },
     {
       type: "input",
-      name: "emailManager",
+      name: "email",
       message: "What is their email?",
     },
     {
@@ -27,24 +39,28 @@ const promptManager = () => {
       name: "officeNumber",
       message: "What is their office number?",
     },
-  ]);
-};
+  ])
+  .then ((response) => {
+    const addManager = new Manager(response.name, response.id, response.email, response.officeNumber)
+    employees.push(addManager);
 
-const promptEngineer = () => {
-  return inquirer.prompt([
-    {
+    prompts();
+  });
+} else if (response.employeeType === 'Engineer') {
+inquirer.prompt([
+      {
       type: "input",
-      name: "engineer",
+      name: "name",
       message: "What is their name?",
     },
     {
       type: "input",
-      name: "Id",
+      name: "id",
       message: "What is their id number?",
     },
     {
       type: "input",
-      name: "emailEngineer",
+      name: "email",
       message: "What is their email?",
     },
     {
@@ -52,24 +68,27 @@ const promptEngineer = () => {
       name: "github",
       message: "What is their Github account name?",
     },
-  ]);
-};
+]).then(response => {
+  const addEngineer = new Engineer(response.name, response.id, response.email, response.github)
+  employees.push(addEngineer);
 
-const promptIntern = () => {
-  return inquirer.prompt([
+  prompts();
+});
+} else if (response.employeeType === 'Intern') {
+inquirer.prompt([
     {
       type: "input",
-      name: "intern",
+      name: "name",
       message: "What is their name?",
     },
     {
       type: "input",
-      name: "Id",
+      name: "id",
       message: "What is their id number?",
     },
     {
       type: "input",
-      name: "emailIntern",
+      name: "email",
       message: "What is their email?",
     },
     {
@@ -77,29 +96,15 @@ const promptIntern = () => {
       name: "school",
       message: "What is their school?",
     },
-  ]);
-};
+  ]).then(response => {
+    const addIntern = new Intern(response.name, response.id, response.email, response.school)
+    employees.push(addIntern);
 
-const managerData = [];
-const engineerData = [];
-const internData = [];
-
-promptManager()
-  .then((answersManager) => {
-    managerData.push(answersManager);
+    prompts();
   })
-  .then(promptEngineer)
-  .then((answersEngineer) => {
-    engineerData.push(answersEngineer);
+}
   })
-  .then(promptIntern)
-  .then((answersIntern) => {
-    internData.push(answersIntern);
-    console.log(managerData);
-    console.log(engineerData);
-    console.log(internData);
-  })
-  .catch((err) => console.error(err));
+}
 
 // const init = () => {
 //   const runEmployeePrompts = () => {
