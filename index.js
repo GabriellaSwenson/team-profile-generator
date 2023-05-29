@@ -81,7 +81,6 @@ const managerData = [];
 const engineerData = [];
 const internData = [];
 
-// Inside each prompt's `.then()` block, you can store the collected data in the respective arrays
 promptManager()
   .then((answersManager) => {
     managerData.push(answersManager);
@@ -99,7 +98,6 @@ promptManager()
   })
   .catch((err) => console.error(err));
 
-// Usage example: Access data from the arrays
 console.log(managerData);
 console.log(engineerData);
 console.log(internData);
