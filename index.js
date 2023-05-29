@@ -1,4 +1,7 @@
 const inquirer = require("inquirer");
+const Manager = require("./Manager");
+const Engineer = require("./Engineer");
+const Intern = require("./Intern");
 
 const { writeFile } = require("fs").promises;
 
@@ -84,23 +87,19 @@ const internData = [];
 promptManager()
   .then((answersManager) => {
     managerData.push(answersManager);
-    // ...
   })
   .then(promptEngineer)
   .then((answersEngineer) => {
     engineerData.push(answersEngineer);
-    // ...
   })
   .then(promptIntern)
   .then((answersIntern) => {
     internData.push(answersIntern);
-    // ...
+    console.log(managerData);
+    console.log(engineerData);
+    console.log(internData);
   })
   .catch((err) => console.error(err));
-
-console.log(managerData);
-console.log(engineerData);
-console.log(internData);
 
 // const init = () => {
 //   const runEmployeePrompts = () => {
