@@ -99,47 +99,68 @@ const promptIntern = () => {
   ]);
 };
 
+const promptResults = [];
+
 const init = () => {
+  const runEmployeePrompts = () => {
+    inquirer
+      .prompt(promptNewEmployee)
+      .then((answersNewEmployee) => {
+        if (answersNewEmployee.promptNewEmployee.includes("No")) {
+          console.log("Program closed."); // You can customize the message
+          return Promise.resolve(); // Return a resolved promise to continue the chain
+        } else {
+          return inquirer.prompt(promptEmployeeType);
+        }
+      })
+      .then((answersEmployeeType) => {
+        const { employeeType } = answersEmployeeType;
+
+        if (employeeType === "engineer") {
+          return inquirer.prompt(promptEngineer).then(runEmployeePrompts);
+        } else if (employeeType === "intern") {
+          return inquirer.prompt(promptIntern).then(runEmployeePrompts);
+        } else {
+          console.log("Invalid employee type."); // You can customize the message
+          return runEmployeePrompts();
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
   promptManager()
     .then((answersManager) =>
       writeFile("index.html", generateManager(answersManager))
     )
-    .then(() => {
-      if (promptNewEmployee.includes("Yes")) {
-        return inquirer.prompt(promptEmployeeType);
-      } else {
-        console.log("Program closed.");
-        return Promise.resolve();
-      }
-    })
+    .then(runEmployeePrompts)
     .catch((err) => console.error(err));
 };
 
 init();
 
-const generateIntern = (promptIntern) => {
+const generateManager = (promptManager) => {
   return `
-                <div class="card m-5 shadow p-0" style="width:300px">
-                    <div class="card-header bg-dark text-white">
-                        <h3>${promptIntern.intern()}</h3>
-                        <h4>
-                        <i class="fas fa-user-graduate pr-3"></i>${promptIntern.getIntern()}
-                        </h4>
-                    </div>
-                    <div class="card-body bg-light">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <span class="font-weight-bold">ID:</span> ${promptIntern.Id()}</li>
-                            <li class="list-group-item">
-                                <span class="font-weight-bold">Email:</span><a href="mailto:${promptIntern.emailIntern()}">${promptIntern.emailIntern()}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <span class="font-weight-bold">School:</span>${promptIntern.school()}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-    `;
+                  <div class="card m-5 shadow p-0" style="width:300px">
+                      <div class="card-header bg-dark text-white">
+                          <h3>${promptManager.manager()}</h3>
+                          <h4>
+                          <i class="fas fa-user-graduate pr-3"></i>${promptManager.getManager()}
+                          </h4>
+                      </div>
+                      <div class="card-body bg-light">
+                          <ul class="list-group">
+                              <li class="list-group-item">
+                                  <span class="font-weight-bold">ID:</span> ${promptManager.Id()}</li>
+                              <li class="list-group-item">
+                                  <span class="font-weight-bold">Email:</span><a href="mailto:${promptManager.emailManager()}">${promptManager.emailManager()}</a>
+                              </li>
+                              <li class="list-group-item">
+                                  <span class="font-weight-bold">School:</span>${promptManager.officeNumber()}
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+      `;
 };
 
 const generateEngineer = (promptEngineer) => {
@@ -167,36 +188,33 @@ const generateEngineer = (promptEngineer) => {
       `;
 };
 
-const generateManager = (promptManager) => {
+const generateIntern = (promptIntern) => {
   return `
-                  <div class="card m-5 shadow p-0" style="width:300px">
-                      <div class="card-header bg-dark text-white">
-                          <h3>${promptManager.manager()}</h3>
-                          <h4>
-                          <i class="fas fa-user-graduate pr-3"></i>${promptManager.getManager()}
-                          </h4>
-                      </div>
-                      <div class="card-body bg-light">
-                          <ul class="list-group">
-                              <li class="list-group-item">
-                                  <span class="font-weight-bold">ID:</span> ${promptManager.Id()}</li>
-                              <li class="list-group-item">
-                                  <span class="font-weight-bold">Email:</span><a href="mailto:${promptManager.emailManager()}">${promptManager.emailManager()}</a>
-                              </li>
-                              <li class="list-group-item">
-                                  <span class="font-weight-bold">School:</span>${promptManager.officeNumber()}
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-      `;
+                <div class="card m-5 shadow p-0" style="width:300px">
+                    <div class="card-header bg-dark text-white">
+                        <h3>${promptIntern.intern()}</h3>
+                        <h4>
+                        <i class="fas fa-user-graduate pr-3"></i>${promptIntern.getIntern()}
+                        </h4>
+                    </div>
+                    <div class="card-body bg-light">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="font-weight-bold">ID:</span> ${promptIntern.Id()}</li>
+                            <li class="list-group-item">
+                                <span class="font-weight-bold">Email:</span><a href="mailto:${promptIntern.emailIntern()}">${promptIntern.emailIntern()}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="font-weight-bold">School:</span>${promptIntern.school()}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+    `;
 };
 
-const generatePage = {
-  generateManager,
-  generateEngineer,
-  generateIntern,
-}`<!DOCTYPE html>
+const generatePage = () => {
+  `<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -222,8 +240,10 @@ const generatePage = {
                 <div class="row d-flex justify-content-center align-items-center">
                     ${generateManager}, ${generateEngineer}, ${generateIntern}
                 </div>
+        </div>
             </div>
         </main>
     </body>
 </html>
     `;
+};
