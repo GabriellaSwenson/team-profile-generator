@@ -73,61 +73,60 @@ const generatePage = (page) => {
                   </div>
       `;
   };
+
+  const markdown = [];
+
+  markdown.push(
+    page
+      .filter((employee) => employee.getType() === "Manager")
+      .map((manager) => generateManager(manager))
+  );
+  markdown.push(
+    page
+      .filter((employee) => employee.getType() === "Engineer")
+      .map((engineer) => generateEngineer(engineer))
+      .join("")
+  );
+  markdown.push(
+    page
+      .filter((employee) => employee.getType() === "Intern")
+      .map((intern) => generateIntern(intern))
+      .join("")
+  );
+
+  return markdown.join("");
 };
-
-const markdown = [];
-
-markdown.push(
-  page
-    .filter((employee) => employee.getType() === "Manager")
-    .map((manager) => generateManager(manager))
-);
-markdown.push(
-  page
-    .filter((employee) => employee.getType() === "Engineer")
-    .map((engineer) => generateEngineer(engineer))
-    .join("")
-);
-markdown.push(
-  page
-    .filter((employee) => employee.getType() === "Intern")
-    .map((intern) => generateIntern(intern))
-    .join("")
-);
-
-return markdown.join("");
 
 module.exports = (page) => {
   return `<!DOCTYPE html>
-    // <html lang="en">
-    //     <head>
-    //         <meta charset="UTF-8" />
-    //         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    //         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    //         <title>My Team</title>
-    //         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    //         <link rel="stylesheet" href="style.css">
-    //         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    //     </head>
-    //     <body>
-    //         <header>
-    //             <div class="text-center">
-    //                 <nav class="navabar bg-dark text-white text-center pt-3 pb-5">
-    //                     <div>
-    //                         <h1>Team</h1>
-    //                     </div>
-    //                 </nav>
-    //             </div>
-    //         </header>
-    //         <main>
-    //             <div class="container">
-    //                 <div class="row d-flex justify-content-center align-items-center">
-    //                     ${generatePage(page)}
-    //                 </div>
-    //         </div>
-    //             </div>
-    //         </main>
-    //     </body>
-    // </html>
-    //     `;
+     <html lang="en">
+         <head>
+             <meta charset="UTF-8" />
+             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+             <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+             <title>My Team</title>
+             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+         </head>
+         <body>
+             <header>
+                 <div class="text-center">
+                     <nav class="navabar bg-dark text-white text-center pt-3 pb-5">
+                         <div>
+                             <h1>Team</h1>
+                         </div>
+                     </nav>
+                 </div>
+             </header>
+             <main>
+                 <div class="container">
+                     <div class="row d-flex justify-content-center align-items-center">
+                         ${generatePage(page)}
+                     </div>
+             </div>
+                 </div>
+             </main>
+         </body>
+     </html>
+        `;
 };
