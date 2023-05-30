@@ -5,7 +5,7 @@ const generatePage = (page) => {
                             <div class="card-header bg-dark text-white">
                                 <h3>${manager.getName()}</h3>
                                 <h4>
-                                <i class="fas fa-user-graduate pr-3"></i>${manager.getType()}
+                                <i class="fas fa-user-graduate pr-3"></i>${manager.getRole()}
                                 </h4>
                             </div>
                             <div class="card-body bg-light">
@@ -16,7 +16,7 @@ const generatePage = (page) => {
                                         <span class="font-weight-bold">Email:</span><a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <span class="font-weight-bold">School:</span>${manager.getOfficeNumber()}
+                                        <span class="font-weight-bold">Office Number:</span>${manager.getOfficeNumber()}
                                     </li>
                                 </ul>
                             </div>
@@ -30,7 +30,7 @@ const generatePage = (page) => {
                         <div class="card-header bg-dark text-white">
                             <h3>${engineer.getName()}</h3>
                             <h4>
-                            <i class="fas fa-user-graduate pr-3"></i>${engineer.getType()}
+                            <i class="fas fa-user-graduate pr-3"></i>${engineer.getRole()}
                             </h4>
                         </div>
                         <div class="card-body bg-light">
@@ -41,7 +41,7 @@ const generatePage = (page) => {
                                     <span class="font-weight-bold">Email:</span><a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a>
                                 </li>
                                 <li class="list-group-item">
-                                    <span class="font-weight-bold">School:</span>${engineer.getGithub()}
+                                    <span class="font-weight-bold">Github:</span>${engineer.getGithub()}
                                 </li>
                             </ul>
                         </div>
@@ -55,7 +55,7 @@ const generatePage = (page) => {
                       <div class="card-header bg-dark text-white">
                           <h3>${intern.getName()}</h3>
                           <h4>
-                          <i class="fas fa-user-graduate pr-3"></i>${intern.getType()}
+                          <i class="fas fa-user-graduate pr-3"></i>${intern.getRole()}
                           </h4>
                       </div>
                       <div class="card-body bg-light">
@@ -78,18 +78,18 @@ const generatePage = (page) => {
 
   markdown.push(
     page
-      .filter((employee) => employee.getType() === "Manager")
+      .filter((employee) => employee.getRole() === "Manager")
       .map((manager) => generateManager(manager))
   );
   markdown.push(
     page
-      .filter((employee) => employee.getType() === "Engineer")
+      .filter((employee) => employee.getRole() === "Engineer")
       .map((engineer) => generateEngineer(engineer))
       .join("")
   );
   markdown.push(
     page
-      .filter((employee) => employee.getType() === "Intern")
+      .filter((employee) => employee.getRole() === "Intern")
       .map((intern) => generateIntern(intern))
       .join("")
   );

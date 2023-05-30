@@ -13,12 +13,12 @@ function buildPage() {
   inquirer
     .prompt({
       type: "list",
-      name: "employeeType",
+      name: "employeeRole",
       message: "Which employee type do you want to add?",
       choices: ["Manager", "Engineer", "Intern", "Finished"],
     })
     .then((response) => {
-      if (response.employeeType === "Manager") {
+      if (response.employeeRole === "Manager") {
         inquirer
           .prompt([
             {
@@ -53,7 +53,7 @@ function buildPage() {
 
             buildPage();
           });
-      } else if (response.employeeType === "Engineer") {
+      } else if (response.employeeRole === "Engineer") {
         inquirer
           .prompt([
             {
@@ -88,7 +88,7 @@ function buildPage() {
 
             buildPage();
           });
-      } else if (response.employeeType === "Intern") {
+      } else if (response.employeeRole === "Intern") {
         inquirer
           .prompt([
             {
@@ -123,7 +123,7 @@ function buildPage() {
 
             buildPage();
           });
-      } else if (response.employeeType === "Finished") {
+      } else if (response.employeeRole === "Finished") {
         const createMarkdown = generateMarkdown(employees);
         fs.writeFile(
           "./html generators/page.html",
